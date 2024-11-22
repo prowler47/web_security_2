@@ -1,0 +1,20 @@
+server:
+  port: 8084
+
+spring:
+  datasource:
+    url: jdbc:postgresql://localhost:5433/websecurity_2
+    username: postgres
+    password: 1111
+
+
+  jpa:
+    show-sql: true
+    properties:
+      hibernate:
+        format_sql: true
+
+
+jwt:
+  secret: 0fyvzbxwk3fk725h8hmrjr0ycynfdw8nd8gdwnwi2qjmuu4zp9j96wr8x5jifed4rxf4nc
+  lifetime: 30m
