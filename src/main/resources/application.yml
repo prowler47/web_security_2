@@ -14,7 +14,6 @@ spring:
       hibernate:
         format_sql: true
 
-
 jwt:
   secret: 0fyvzbxwk3fk725h8hmrjr0ycynfdw8nd8gdwnwi2qjmuu4zp9j96wr8x5jifed4rxf4nc
   lifetime: 30m

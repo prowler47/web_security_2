@@ -16,6 +16,8 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.HttpStatusEntryPoint;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import ua.dragunovskiy.web_security_2.repository.RoleRepository;
+import ua.dragunovskiy.web_security_2.repository.UserRepository;
 import ua.dragunovskiy.web_security_2.service.UserService;
 
 @Configuration
@@ -23,8 +25,16 @@ import ua.dragunovskiy.web_security_2.service.UserService;
 @EnableMethodSecurity(securedEnabled = true)
 @RequiredArgsConstructor
 public class SecurityConfig {
-    private final UserService userService;
+//    private final UserService userService;
     private final JwtRequestFilter jwtRequestFilter;
+
+    private final UserRepository userRepository;
+    private final RoleRepository roleRepository;
+
+    @Bean
+    public UserService userService() {
+        return new UserService(userRepository, roleRepository, passwordEncoder());
+    }
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
@@ -49,7 +59,7 @@ public class SecurityConfig {
     public DaoAuthenticationProvider daoAuthenticationProvider() {
         DaoAuthenticationProvider daoAuthenticationProvider = new DaoAuthenticationProvider();
         daoAuthenticationProvider.setPasswordEncoder(passwordEncoder());
-        daoAuthenticationProvider.setUserDetailsService(userService);
+        daoAuthenticationProvider.setUserDetailsService(userService());
         return daoAuthenticationProvider;
     }
 

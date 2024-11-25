@@ -2,7 +2,7 @@ package ua.dragunovskiy.web_security_2.service;
 
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
-import org.springframework.boot.autoconfigure.security.SecurityProperties;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -23,6 +23,7 @@ import java.util.stream.Collectors;
 public class UserService implements UserDetailsService {
     private final UserRepository userRepository;
     private final RoleRepository roleRepository;
+    private final PasswordEncoder passwordEncoder;
 
 
     public Optional<User> findByUsername(String username) {
@@ -40,7 +41,16 @@ public class UserService implements UserDetailsService {
     }
 
     // TODO: add check is user valid
-    public User createNewUser(User user) {
+//    public User createNewUser(User user) {
+//        user.setRoles(List.of(roleRepository.findByName("ROLE_USER").get()));
+//        return userRepository.save(user);
+//    }
+
+    public User createNewUser(RegistrationUserDto registrationUserDto) {
+        User user = new User();
+        user.setUsername(registrationUserDto.getUsername());
+        user.setEmail(registrationUserDto.getEmail());
+        user.setPassword(passwordEncoder.encode(registrationUserDto.getPassword()));
         user.setRoles(List.of(roleRepository.findByName("ROLE_USER").get()));
         return userRepository.save(user);
     }
